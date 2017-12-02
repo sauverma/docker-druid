@@ -6,6 +6,8 @@ services:
     container_name: postgres
     environment:
       - POSTGRES_PASSWORD=TCrGaanoC2s7gT
+    ports:
+      - "PRIVATE_IP:5432:5432"
 
   zookeeper:
     container_name: zookeeper
@@ -13,54 +15,83 @@ services:
     environment:
       - ZOO_ID=1
       - ZOO_SERVERS=zookeeper
+    ports:
+      - "PRIVATE_IP:2181:2181"
+      - "PRIVATE_IP:2888:2888"
+      - "PRIVATE_IP:3888:3888"
 
   overlord:
-    image: znly/druid:0.9.1.1
+    image: znly/druid:0.10.1
     environment:
-      - DRUID_XMX=1g 
-      - DRUID_XMS=1g 
-      - DRUID_MAXNEWSIZE=250m 
+      - DRUID_XMX=1g
+      - DRUID_XMS=1g
+      - DRUID_MAXNEWSIZE=250m
       - DRUID_NEWSIZE=250m
+      - DRUID_LOGLEVEL=debug  
     command:
       - overlord
+    ports:
+      - "PRIVATE_IP:8090:8090"
+    volumes:
+      - /mnt/se-druid/druidLocalStorage:/tmp/druid/localStorage
 
   coordinator:
-    image: znly/druid:0.9.1.1
+    image: znly/druid:0.10.1
     environment:
-      - DRUID_XMX=1g 
-      - DRUID_XMS=1g 
-      - DRUID_MAXNEWSIZE=250m 
+      - DRUID_XMX=1g
+      - DRUID_XMS=1g
+      - DRUID_MAXNEWSIZE=250m
       - DRUID_NEWSIZE=250m
+      - DRUID_LOGLEVEL=debug  
     command:
       - coordinator
-
+    ports:
+      - "PRIVATE_IP:8081:8081"
+    volumes:
+      - /mnt/se-druid/druidLocalStorage:/tmp/druid/localStorage
 
   middlemanager:
-    image: znly/druid:0.9.1.1
+    image: znly/druid:0.10.1
     environment:
-      - DRUID_XMX=1g 
-      - DRUID_XMS=1g 
-      - DRUID_MAXNEWSIZE=250m 
+      - DRUID_XMX=1g
+      - DRUID_XMS=1g
+      - DRUID_MAXNEWSIZE=250m
       - DRUID_NEWSIZE=250m
+      - DRUID_LOGLEVEL=debug  
     command:
       - middleManager
+    ports:
+      - "PRIVATE_IP:8091:8091"
+    volumes:
+      - /mnt/se-druid/druidLocalStorage:/tmp/druid/localStorage
+      - /mnt/se-druid/sampledataset:/mnt/se-druid/sampledataset
 
   historical:
-    image: znly/druid:0.9.1.1
+    image: znly/druid:0.10.1
     environment:
-      - DRUID_XMX=1g 
-      - DRUID_XMS=1g 
-      - DRUID_MAXNEWSIZE=250m 
+      - DRUID_XMX=1g
+      - DRUID_XMS=1g
+      - DRUID_MAXNEWSIZE=250m
       - DRUID_NEWSIZE=250m
+      - DRUID_LOGLEVEL=debug  
     command:
       - historical
+    ports:
+      - "PRIVATE_IP:8083:8083"
+    volumes:
+      - /mnt/se-druid/druidLocalStorage:/tmp/druid/localStorage
 
   broker:
-    image: znly/druid:0.9.1.1
+    image: znly/druid:0.10.1
     environment:
-      - DRUID_XMX=1g 
-      - DRUID_XMS=1g 
-      - DRUID_MAXNEWSIZE=250m 
+      - DRUID_XMX=1g
+      - DRUID_XMS=1g
+      - DRUID_MAXNEWSIZE=250m
       - DRUID_NEWSIZE=250m
+      - DRUID_LOGLEVEL=debug  
     command:
       - broker
+    ports:
+      - "PRIVATE_IP:8082:8082"
+    volumes:
+      - /mnt/se-druid/druidLocalStorage:/tmp/druid/localStorage

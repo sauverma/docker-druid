@@ -2,9 +2,9 @@ FROM progrium/busybox
 MAINTAINER jbaptiste <jb@zen.ly>
 
 # Java config
-ENV DRUID_VERSION   0.9.1.1
-ENV JAVA_HOME       /opt/jre1.8.0_40
-ENV PATH            $PATH:/opt/jre1.8.0_40/bin
+ENV DRUID_VERSION   0.10.1
+ENV JAVA_HOME       /opt/jdk1.8.0_151
+ENV PATH            $PATH:/opt/jdk1.8.0_151/bin
 
 # Druid env variable
 ENV DRUID_XMX           '-'
@@ -18,7 +18,7 @@ RUN opkg-install wget tar bash \
     && mkdir /tmp/druid
 
 RUN wget -q --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" -O - \
-    http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jre-8u40-linux-x64.tar.gz | tar -xzf - -C /opt 
+    http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz | tar -xzf - -C /opt 
 
 RUN wget -q --no-check-certificate --no-cookies -O - \ 
     http://static.druid.io/artifacts/releases/druid-$DRUID_VERSION-bin.tar.gz | tar -xzf - -C /opt \
